@@ -396,3 +396,10 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Spore modding
+!/SMFX/**/*
+*.dll
+*.sporemod
+*.zip
+*.package
