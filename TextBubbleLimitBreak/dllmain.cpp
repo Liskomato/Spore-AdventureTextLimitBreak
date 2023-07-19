@@ -1,5 +1,6 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
+#include "TextLimitBreaker.h"
 
 void Initialize()
 {
@@ -12,6 +13,39 @@ void Initialize()
 	//  - Change materials
 }
 
+namespace UTFWin {
+	
+	member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint32_t))
+	{
+		bool detoured(const ResourceKey & resourceKey, bool boolean, uint32_t parameter)
+		{
+			bool func = original_function(this, resourceKey, boolean, parameter);
+
+			if (this->mResourceKey.instanceID == 0x23c919ea || this->mResourceKey.instanceID == 0x2cb74334) {
+				this->FindWindowByID(0xCEFA1100)->AddWinProc(new TextLimitBreaker());
+			}
+
+			if (this->mResourceKey.instanceID == 0x7250e3a1) {
+				this->FindWindowByID(0x0710A140)->AddWinProc(new TextLimitBreaker());
+			}
+
+			return func;
+
+		}
+	};
+	
+	/*
+	static_detour(ITextEditCon_detour, ITextEdit* ()) 
+	{
+		ITextEdit* detoured() {
+			ITextEdit* fun = original_function();
+			if (fun->ToWindow()->GetControlID() == 0xCEFA1100)
+				fun->SetMaxTextLength(-1);
+			return fun;
+		}
+	};
+	*/
+}
 void Dispose()
 {
 	// This method is called when the game is closing
@@ -19,6 +53,9 @@ void Dispose()
 
 void AttachDetours()
 {
+	UTFWin::UILayoutLoad_detour::attach(GetAddress(UTFWin::UILayout, Load));
+//	UTFWin::ITextEditCon_detour::attach(GetAddress(UTFWin::ITextEdit,Create));
+	
 	// Call the attach() method on any detours you want to add
 	// For example: cViewer_SetRenderType_detour::attach(GetAddress(cViewer, SetRenderType));
 }

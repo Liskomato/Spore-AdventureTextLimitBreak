@@ -19,6 +19,9 @@
     <ClInclude Include="stdafx.h">
       <Filter>Internal</Filter>
     </ClInclude>
+    <ClInclude Include="TextLimitBreaker.h">
+      <Filter>TextBubbleLimitBreak</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -26,6 +29,9 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="TextLimitBreaker.cpp">
+      <Filter>TextBubbleLimitBreak</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
