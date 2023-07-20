@@ -43,8 +43,8 @@ int TextLimitBreaker::GetEventFlags() const
 // checking what kind of message was sent...
 bool TextLimitBreaker::HandleUIMessage(IWindow* window, const Message& message)
 {
-	if (window->GetControlID() == 0xCEFA1100) App::ConsolePrintF("0xCEFA1100 message: %#X", message.eventType);
-	else if (window->GetControlID() == 0x0710A140) App::ConsolePrintF("0x0710A140 message: %#X", message.eventType);
+	if (window->GetControlID() == 0xCEFA1100) App::ConsolePrintF("0xCEFA1100 message: 0x%X", message.eventType);
+	if (window->GetControlID() == 0x0710A140) App::ConsolePrintF("0x0710A140 message: 0x%X", message.eventType);
 
 	ITextEditPtr textWindow = object_cast<ITextEdit>(window);
 	App::ConsolePrintF("Text limit: %d", textWindow->GetMaxTextLength());
@@ -52,7 +52,7 @@ bool TextLimitBreaker::HandleUIMessage(IWindow* window, const Message& message)
 	if (message.IsType(kMsgButtonSelect) && (window->GetControlID() == 0xCEFA1100 || window->GetControlID() == 0x0710A140)) {
 		
 		textWindow->SetMaxTextLength(-1);
-		App::ConsolePrintF("Text limit: %d", textWindow->GetMaxTextLength());
+		App::ConsolePrintF("New text limit: %d", textWindow->GetMaxTextLength());
 		return true;
 	}
 	
