@@ -36,7 +36,7 @@ void* TextLimitBreaker::Cast(uint32_t type) const
 // By default, it receives mouse/keyboard input and advanced messages.
 int TextLimitBreaker::GetEventFlags() const
 {
-	return kEventFlagBasicInput | kEventFlagAdvanced;
+	return kEventFlagBasicInput | kEventFlagAdvanced | kEventFlagLayout;
 }
 
 // The method that receives the message. The first thing you should do is probably
@@ -45,17 +45,70 @@ bool TextLimitBreaker::HandleUIMessage(IWindow* window, const Message& message)
 {
 	if (window->GetControlID() == 0xCEFA1100 || window->GetControlID() == 0x0710A140) {
 		ITextEditPtr textWindow = object_cast<ITextEdit>(window);
+		if (window->GetNextWinProc(this) != nullptr) {
+			auto* nextProc = window->GetNextWinProc(this);
+			App::ConsolePrintF("Second WinProc flags: %#x", nextProc->GetEventFlags());
+			if (window->GetNextWinProc(nextProc) != nullptr) {
+				auto* secondProc = window->GetNextWinProc(nextProc);
+				App::ConsolePrintF("Third WinProc flags: %#x", secondProc->GetEventFlags());
+			}
 		
+		}
 		if (window->GetControlID() == 0xCEFA1100) App::ConsolePrintF("0xCEFA1100 message: 0x%X", message.eventType);
 		if (window->GetControlID() == 0x0710A140) App::ConsolePrintF("0x0710A140 message: 0x%X", message.eventType);
 
 		App::ConsolePrintF("Text limit: %d", textWindow->GetMaxTextLength());
 
-		if ((message.IsType(kMsgButtonSelect) || message.IsType(0x9B1552DB)) && (window->GetControlID() == 0xCEFA1100 || window->GetControlID() == 0x0710A140)) {
+		if (message.IsType(kMsgButtonSelect)) {
 
 			textWindow->SetMaxTextLength(-1);
 			App::ConsolePrintF("New text limit: %d", textWindow->GetMaxTextLength());
 			return true;
+		}
+		if (message.IsType(0x9B1552DB) || message.IsType(kMsgTextChanged)) {
+			textWindow->SetMaxTextLength(-1);
+			if (Simulator::IsScenarioMode()) {
+				auto* resource = ScenarioMode.GetResource();
+				string16 winText = textWindow->GetText();
+				if (window->GetControlID() == 0xCEFA1100) {
+					for (auto& act : resource->mActs) {
+						for (auto& goal : act.mGoals) {
+							for (auto& dialog : goal.mDialogs) {
+								App::ConsolePrintF("Dialog match?\ndialog.mText.mNonLocalizedString: %ls\ntextWindow->GetText(): %ls", dialog.mText.mNonLocalizedString, winText);
+								if (dialog.mText.mNonLocalizedString == winText) {
+
+									textWindow->SetText(dialog.mText.mNonLocalizedString.c_str(), -1);
+									return true;
+								}
+							}
+						}
+					}
+					for (auto& mClass : resource->mClasses) {
+						for (auto& act : mClass.second.mActs) {
+							for (auto& dialog : act.mDialogsChatter) {
+								if (dialog.mText.mNonLocalizedString == winText) {
+									App::ConsolePrintF("Dialog match?\ndialog.mText.mNonLocalizedString: %ls\ntextWindow->GetText(): %ls", dialog.mText.mString.GetText(), winText);
+									textWindow->SetText(dialog.mText.mNonLocalizedString.c_str(), -1);
+									return true;
+								}
+							}
+							for (auto& dialog : act.mDialogsInspect) {
+								if (dialog.mText.mNonLocalizedString == winText) {
+									App::ConsolePrintF("Dialog match?\ndialog.mText.mNonLocalizedString: %ls\ntextWindow->GetText(): %ls", dialog.mText.mString.GetText(), winText);
+									textWindow->SetText(dialog.mText.mNonLocalizedString.c_str(), -1);
+									return true;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+			
+		if	(message.IsType(kMsgLayout)) {
+			textWindow->SetMaxTextLength(-1);
+			App::ConsolePrintF("New text limit: %d", textWindow->GetMaxTextLength());
+			return false;
 		}
 	}
 	
