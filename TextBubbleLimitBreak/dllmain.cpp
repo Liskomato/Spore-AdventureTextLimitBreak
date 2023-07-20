@@ -25,6 +25,10 @@ namespace UTFWin {
 				this->FindWindowByID(0xCEFA1100)->AddWinProc(new TextLimitBreaker());
 			}
 
+			if (this->mResourceKey.instanceID == 0x93ab9d4b || this->mResourceKey.instanceID == 0xec4cfaba) {
+				this->FindWindowByID(0xCEFF0000)->AddWinProc(new TextLimitBreaker());
+			}
+
 			if (this->mResourceKey.instanceID == 0x7250e3a1) {
 				this->FindWindowByID(0x0710A140)->AddWinProc(new TextLimitBreaker());
 			}
