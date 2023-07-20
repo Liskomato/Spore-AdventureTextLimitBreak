@@ -51,20 +51,24 @@ int TextLimitBreaker::GetEventFlags() const
 // checking what kind of message was sent...
 bool TextLimitBreaker::HandleUIMessage(IWindow* window, const Message& message)
 {
-	if (window->GetControlID() == 0xCEFF0000 && message.IsType(kMsgButtonSelect) && WindowManager.GetMainWindow()->FindWindowByID(0x07DE6958)->IsAncestorOf(window)) {
+	if (window->GetControlID() == 0xCEFA1100 && message.IsType(kMsgWindowChanged)) {
+		
+		IWindowPtr parent = window->GetParent();
+		IWindowPtr grandparent = parent->GetParent();
+
 		eastl::vector<ITextEdit*> textBoxes;
 		eastl::vector<IWindow*> goalButtons;
 		
 		uint32_t goalIndex = 0;
 		uint32_t actIndex = 0;
 
-		for (IWindow* child : window->children()) {
+		for (IWindow* child : grandparent->children()) {
 			if (child->FindWindowByID(0xCEFA1100) != nullptr) {
 				ITextEdit* textBox = object_cast<ITextEdit>(child->FindWindowByID(0xCEFA1100));
 				textBoxes.emplace_back(textBox);
 			}
 		}
-		IWindowPtr EditGoalsUI = WindowManager.GetMainWindow()->FindWindowByID(0x0757ACB8);
+		IWindowPtr EditGoalsUI = WindowManager.GetMainWindow()->FindWindowByID(0x07467620);
 		for (IWindow* child : EditGoalsUI->children()) {
 			if (child->FindWindowByID(0x074656A0) != nullptr) {
 				goalButtons.emplace_back(child->FindWindowByID(0x074656A0));
