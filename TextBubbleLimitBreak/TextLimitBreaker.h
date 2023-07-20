@@ -14,6 +14,9 @@ class TextLimitBreaker
 public:
 	static const uint32_t TYPE = id("TextLimitBreaker");
 	
+	cScenarioResourcePtr resource;
+	cScenarioDataPtr data;
+
 	TextLimitBreaker();
 	~TextLimitBreaker();
 

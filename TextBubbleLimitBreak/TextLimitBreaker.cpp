@@ -3,6 +3,14 @@
 
 TextLimitBreaker::TextLimitBreaker()
 {
+	if (Simulator::IsScenarioMode()) {
+		resource = ScenarioMode.GetResource();
+		data = ScenarioMode.GetData();
+	}
+	else {
+		resource = nullptr;
+		data = nullptr;
+	}
 }
 
 
