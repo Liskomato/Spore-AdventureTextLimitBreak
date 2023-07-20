@@ -49,7 +49,7 @@ bool TextLimitBreaker::HandleUIMessage(IWindow* window, const Message& message)
 	ITextEditPtr textWindow = object_cast<ITextEdit>(window);
 	App::ConsolePrintF("Text limit: %d", textWindow->GetMaxTextLength());
 
-	if (message.IsType(kMsgButtonSelect) && (window->GetControlID() == 0xCEFA1100 || window->GetControlID() == 0x0710A140)) {
+	if ((message.IsType(kMsgButtonSelect) || message.IsType(0x9B1552DB)) && (window->GetControlID() == 0xCEFA1100 || window->GetControlID() == 0x0710A140)) {
 		
 		textWindow->SetMaxTextLength(-1);
 		App::ConsolePrintF("New text limit: %d", textWindow->GetMaxTextLength());
