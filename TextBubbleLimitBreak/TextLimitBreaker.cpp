@@ -43,17 +43,20 @@ int TextLimitBreaker::GetEventFlags() const
 // checking what kind of message was sent...
 bool TextLimitBreaker::HandleUIMessage(IWindow* window, const Message& message)
 {
-	if (window->GetControlID() == 0xCEFA1100) App::ConsolePrintF("0xCEFA1100 message: 0x%X", message.eventType);
-	if (window->GetControlID() == 0x0710A140) App::ConsolePrintF("0x0710A140 message: 0x%X", message.eventType);
-
-	ITextEditPtr textWindow = object_cast<ITextEdit>(window);
-	App::ConsolePrintF("Text limit: %d", textWindow->GetMaxTextLength());
-
-	if ((message.IsType(kMsgButtonSelect) || message.IsType(0x9B1552DB)) && (window->GetControlID() == 0xCEFA1100 || window->GetControlID() == 0x0710A140)) {
+	if (window->GetControlID() == 0xCEFA1100 || window->GetControlID() == 0x0710A140) {
+		ITextEditPtr textWindow = object_cast<ITextEdit>(window);
 		
-		textWindow->SetMaxTextLength(-1);
-		App::ConsolePrintF("New text limit: %d", textWindow->GetMaxTextLength());
-		return true;
+		if (window->GetControlID() == 0xCEFA1100) App::ConsolePrintF("0xCEFA1100 message: 0x%X", message.eventType);
+		if (window->GetControlID() == 0x0710A140) App::ConsolePrintF("0x0710A140 message: 0x%X", message.eventType);
+
+		App::ConsolePrintF("Text limit: %d", textWindow->GetMaxTextLength());
+
+		if ((message.IsType(kMsgButtonSelect) || message.IsType(0x9B1552DB)) && (window->GetControlID() == 0xCEFA1100 || window->GetControlID() == 0x0710A140)) {
+
+			textWindow->SetMaxTextLength(-1);
+			App::ConsolePrintF("New text limit: %d", textWindow->GetMaxTextLength());
+			return true;
+		}
 	}
 	
 	// Return true if the message was handled, and therefore no other window procedure should receive it.
