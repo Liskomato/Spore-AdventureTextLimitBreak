@@ -1,9 +1,7 @@
 # Adventure Text Limit Break
  This mod disables all text limitations on text edit fields found in Spore's Adventure Editor, allowing you to be as verbose as you want to be. It does not extend the amount of text bubbles total in each act, goal and creation, but at least now you will no longer be restricted by the 192 character limit imposed on you previously.
 
-![](TextLimitsBroken.png)
-
- *Showcase of the mod in action.*
+![](TextLimitsBroken.png) 
 
  If you encounter any issues, please don't hesitate to contact me about this! 
 
@@ -20,4 +18,4 @@ Same thing if you were to use the Localizer before for this purpose: The text it
 Recently when I was sharing three of my adventures utilizing overlong text, two of them couldn't be shared until I removed thumbnails for one adventure, and trimmed the previous intro/win/lose texts to less than 192 characters. If you encounter any issues with sharing your own adventures, try doing the same things I did until they comply to share. Or, if you know how to use SporeModder FX, try compressing your PNG thumbnails with a compression algorithm like [zopfli](https://github.com/google/zopfli), and manually place them again into your EditorSaves package.
 
  ## Credits
- - Liskomato: Main developer 
+ - Liskomato - Main developer 
