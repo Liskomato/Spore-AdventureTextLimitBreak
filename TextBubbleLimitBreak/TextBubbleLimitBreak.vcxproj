@@ -100,6 +100,7 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TextErrorMessageSender.h" />
     <ClInclude Include="TextLimitBreaker.h">
       <SubType>
       </SubType>

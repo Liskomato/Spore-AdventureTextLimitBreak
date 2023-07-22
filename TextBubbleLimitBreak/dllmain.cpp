@@ -1,6 +1,7 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
 #include "TextLimitBreaker.h"
+#include "TextErrorMessageSender.h"
 
 void Initialize()
 {
@@ -38,6 +39,14 @@ namespace UTFWin {
 		}
 	};
 	
+	member_detour(TextError_dtr, TextErrorMessageSender, void* (void*)) {
+		void* detoured(void* p1) {
+			App::ConsolePrintF("Function 0x989170 called.");
+			return original_function(this,p1);
+		}
+
+	};
+
 	/*
 	static_detour(ITextEditCon_detour, ITextEdit* ()) 
 	{
@@ -60,6 +69,8 @@ void AttachDetours()
 	UTFWin::UILayoutLoad_detour::attach(GetAddress(UTFWin::UILayout, Load));
 //	UTFWin::ITextEditCon_detour::attach(GetAddress(UTFWin::ITextEdit,Create));
 	
+	UTFWin::TextError_dtr::attach(Address(0x989170));
+
 	// Call the attach() method on any detours you want to add
 	// For example: cViewer_SetRenderType_detour::attach(GetAddress(cViewer, SetRenderType));
 }

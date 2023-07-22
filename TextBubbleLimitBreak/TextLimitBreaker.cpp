@@ -51,7 +51,8 @@ int TextLimitBreaker::GetEventFlags() const
 // checking what kind of message was sent...
 bool TextLimitBreaker::HandleUIMessage(IWindow* window, const Message& message)
 {
-	if (window->GetControlID() == 0xCEFA1100 && message.IsType(kMsgWindowChanged)) {
+	/*
+	if (window->GetControlID() == 0xCEFA1100 && message.IsType(0x9B1552DB)) {
 		
 		IWindowPtr parent = window->GetParent();
 		IWindowPtr grandparent = parent->GetParent();
@@ -99,7 +100,15 @@ bool TextLimitBreaker::HandleUIMessage(IWindow* window, const Message& message)
 			return true;
 		}
 		return false;
+	}*/
+
+	/*
+	if (window->GetControlID() == 0xCEFA1100 && message.IsType(0x9B1552DB))
+	{
+		
 	}
+	*/
+
 	if (window->GetControlID() == 0xCEFA1100 || window->GetControlID() == 0x0710A140) {
 		ITextEditPtr textWindow = object_cast<ITextEdit>(window);
 		

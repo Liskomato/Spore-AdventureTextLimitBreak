@@ -22,6 +22,9 @@
     <ClInclude Include="TextLimitBreaker.h">
       <Filter>TextBubbleLimitBreak</Filter>
     </ClInclude>
+    <ClInclude Include="TextErrorMessageSender.h">
+      <Filter>TextBubbleLimitBreak</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
