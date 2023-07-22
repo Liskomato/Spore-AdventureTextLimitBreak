@@ -8,3 +8,7 @@ public:
 	void* func84h();
 
 };
+
+class TextApplier : public ITextEdit {
+
+};

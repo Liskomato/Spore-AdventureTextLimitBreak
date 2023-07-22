@@ -39,9 +39,22 @@ namespace UTFWin {
 		}
 	};
 	
+
+	member_detour(TextApplier_dtr, TextApplier, bool(uint32_t*, uint32_t, void*, int, float)) {
+	
+		bool detoured(uint32_t * p1, uint32_t p2, void* p3, int p4, float p5) {
+			IWindowPtr thisWindow = this->ToWindow();
+			if (thisWindow->GetControlID() == 0xCEFA1100 || thisWindow->GetControlID() == 0x0710A140) {
+				this->SetMaxTextLength(-1);
+			}
+			bool func = original_function(this, p1, p2, p3, p4, p5);
+			return func;
+		}
+	};
+
 	member_detour(TextError_dtr, TextErrorMessageSender, void* (void*)) {
 		void* detoured(void* p1) {
-			App::ConsolePrintF("Function 0x989170 called.");
+		//	App::ConsolePrintF("Function 0x989170 called.");
 			return original_function(this,p1);
 		}
 
@@ -70,6 +83,7 @@ void AttachDetours()
 //	UTFWin::ITextEditCon_detour::attach(GetAddress(UTFWin::ITextEdit,Create));
 	
 	UTFWin::TextError_dtr::attach(Address(0x989170));
+	UTFWin::TextApplier_dtr::attach(Address(0x98c4d0));
 
 	// Call the attach() method on any detours you want to add
 	// For example: cViewer_SetRenderType_detour::attach(GetAddress(cViewer, SetRenderType));
