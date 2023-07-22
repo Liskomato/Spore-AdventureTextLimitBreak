@@ -69,13 +69,19 @@ bool TextLimitBreaker::HandleUIMessage(IWindow* window, const Message& message)
 
 	//	App::ConsolePrintF("Text limit: %d", textWindow->GetMaxTextLength());
 
-	if (message.IsType(kMsgTextChanged)) {
+	if (message.IsType(kMsgTextChanged) || message.IsType(kMsgButtonSelect)) {
 		ITextEditPtr textWindow = object_cast<ITextEdit>(window);
 		textWindow->SetMaxTextLength(-1);
+		if (textWindow->GetTextEditFlag(ITextEdit::kFlagAcceptReturn) == false && window->GetControlID() == 0xCEFA1100) {
+			textWindow->SetTextEditFlag(ITextEdit::kFlagAcceptReturn, true);
+		}
 	//	App::ConsolePrintF("New text limit: %d", textWindow->GetMaxTextLength());
 		return true;
 	}
-	
+	if (message.IsType(0x9B1552DB)) {
+		//	If we want to do something with message type 0x9B1552DB, we can do so here.
+		//	App::ConsolePrintF("Error message 0x9B1552DB hit the window procedure.");
+	}
 	
 	// Return true if the message was handled, and therefore no other window procedure should receive it.
 	return false;

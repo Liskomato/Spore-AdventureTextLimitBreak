@@ -1,7 +1,7 @@
 // dllmain.cpp : Defines the entry point for the DLL application.
 #include "stdafx.h"
 #include "TextLimitBreaker.h"
-#include "TextErrorMessageSender.h"
+#include "TextLimitBreakClasses.h"
 
 void Initialize()
 {
@@ -18,7 +18,7 @@ namespace UTFWin {
 	/// <summary>
 	/// We detour UILayout::Load to apply our own WinProcs to some of the windows found here. 
 	/// 
-	/// Basically, it is a fallback function to make sure you can go past the vanilla text limits even if some of the detours found below fail.
+	/// Basically, these win procs then allow us to modify some of these windows without fear of repercussions, undefined behaviour or glitches.
 	/// </summary>
 	member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint32_t))
 	{
@@ -29,10 +29,6 @@ namespace UTFWin {
 			if (this->mResourceKey.instanceID == 0x23c919ea || this->mResourceKey.instanceID == 0x2cb74334) {
 				this->FindWindowByID(0xCEFA1100)->AddWinProc(new TextLimitBreaker());
 			}
-			/*
-			if (this->mResourceKey.instanceID == 0x93ab9d4b || this->mResourceKey.instanceID == 0xec4cfaba) {
-				this->FindWindowByID(0xCEFF0000)->AddWinProc(new TextLimitBreaker());
-			}*/
 
 			if (this->mResourceKey.instanceID == 0x7250e3a1) {
 				this->FindWindowByID(0x0710A140)->AddWinProc(new TextLimitBreaker());
@@ -66,8 +62,8 @@ namespace UTFWin {
 
 	member_detour(TextError_dtr, TextErrorMessageSender, void* (void*)) {
 		void* detoured(void* p1) {
-			MessageBoxW(NULL,L"Function address 0x989170 (in March 2017 version) was called. This means the error message 0x9B1552DB was sent, so applying the extended text has failed.\n\nIf you get this error message, please contact Liskomato on GitHub or Discord so they can look on this matter.\nTIP: You can read this error message again in the cheat console in case you close this window.", L"Adventure Text Limit Break: TextErrorMessageSender", MB_OK | MB_ICONWARNING);
-			App::ConsolePrintF("Text Limit Break: Function address 0x989170 (in March 2017 version) was called. This means the error message 0x9B1552DB was sent, so applying the extended text has failed.\n\nIf you get this error message, please contact Liskomato on GitHub or Discord so they can look on this matter.");
+	//		MessageBoxW(NULL,L"Function address 0x989170 (in March 2017 version) was called. This means the error message 0x9B1552DB was sent, so applying the extended text has failed.\n\nIf you get this error message, please contact Liskomato on GitHub or Discord so they can look on this matter.\nTIP: You can read this error message again in the cheat console in case you close this window.", L"Adventure Text Limit Break: TextErrorMessageSender", MB_OK | MB_ICONWARNING);
+	//		App::ConsolePrintF("Text Limit Break: Function address 0x989170 (in March 2017 version) was called. This means the error message 0x9B1552DB was sent, so applying the extended text has failed.\n\nIf you get this error message, please contact Liskomato on GitHub or Discord so they can look on this matter.");
 			return original_function(this,p1);
 		}
 
@@ -85,8 +81,8 @@ void AttachDetours()
 	UTFWin::UILayoutLoad_detour::attach(GetAddress(UTFWin::UILayout, Load));
 	
 	// Detours of non-SDK functions.
-	UTFWin::TextError_dtr::attach(Address(0x989170));
-	UTFWin::TextApplier_dtr::attach(Address(0x98c4d0));
+	UTFWin::TextError_dtr::attach(Address(ModAPI::ChooseAddress(0x989520,0x989170)));
+	UTFWin::TextApplier_dtr::attach(Address(ModAPI::ChooseAddress(0x98c7f0,0x98c4d0)));
 
 	// Call the attach() method on any detours you want to add
 	// For example: cViewer_SetRenderType_detour::attach(GetAddress(cViewer, SetRenderType));
