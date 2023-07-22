@@ -1,0 +1,4 @@
+<mod displayName="Adventure Text Limit Break" unique="TextBubbleLimitBreak" description="Removes all text limits from the Adventure Editor." installerSystemVersion="1.0.1.2" hasCustomInstaller="false" isExperimental="false" dllsBuild="2.5.278">
+<prerequisite>TextBubbleLimitBreak.dll</prerequisite>
+<remove>TextBubbleLimitBreak.dll</remove>
+</mod>

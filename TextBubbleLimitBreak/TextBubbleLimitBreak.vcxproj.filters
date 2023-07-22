@@ -22,7 +22,7 @@
     <ClInclude Include="TextLimitBreaker.h">
       <Filter>TextBubbleLimitBreak</Filter>
     </ClInclude>
-    <ClInclude Include="TextErrorMessageSender.h">
+    <ClInclude Include="TextLimitBreakClasses.h">
       <Filter>TextBubbleLimitBreak</Filter>
     </ClInclude>
   </ItemGroup>
