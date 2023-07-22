@@ -14,8 +14,11 @@ class TextLimitBreaker
 public:
 	static const uint32_t TYPE = id("TextLimitBreaker");
 	
-	cScenarioResourcePtr resource;
-	cScenarioDataPtr data;
+	///
+	/// Pointers to main scenario classes in case we need to fetch information from them. We assign the data in the constructor, and deassign it in the destructor.
+	/// 
+//	cScenarioResourcePtr resource;
+//	cScenarioDataPtr data;
 
 	TextLimitBreaker();
 	~TextLimitBreaker();

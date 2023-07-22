@@ -15,7 +15,11 @@ void Initialize()
 }
 
 namespace UTFWin {
-	
+	/// <summary>
+	/// We detour UILayout::Load to apply our own WinProcs to some of the windows found here. 
+	/// 
+	/// Basically, it is a fallback function to make sure you can go past the vanilla text limits even if some of the detours found below fail.
+	/// </summary>
 	member_detour(UILayoutLoad_detour, UILayout, bool(const ResourceKey&, bool, uint32_t))
 	{
 		bool detoured(const ResourceKey & resourceKey, bool boolean, uint32_t parameter)
@@ -43,34 +47,32 @@ namespace UTFWin {
 	member_detour(TextApplier_dtr, TextApplier, bool(uint32_t*, uint32_t, void*, int, float)) {
 	
 		bool detoured(uint32_t * p1, uint32_t p2, void* p3, int p4, float p5) {
+			/// Turning this text editor into a Window class intrusive pointer
 			IWindowPtr thisWindow = this->ToWindow();
-			if (thisWindow->GetControlID() == 0xCEFA1100 || thisWindow->GetControlID() == 0x0710A140) {
-				this->SetMaxTextLength(-1);
+			/// Checking what type of window we're working with. These are all text edit windows found in the Adventure Editor.
+			if (thisWindow->GetControlID() == 0xCEFA1100 || 
+				thisWindow->GetControlID() == 0x0710A140 || 
+				thisWindow->GetControlID() == 0x07172970 || 
+				thisWindow->GetControlID() == 0x07172950 ||
+				thisWindow->GetControlID() == 0x07172960 ||
+				thisWindow->GetControlID() == 0x0743B978 )
+			{
+				this->SetMaxTextLength(-1);		// If match is found, set the max text length to -1 (basically unlimited)
 			}
-			bool func = original_function(this, p1, p2, p3, p4, p5);
+			bool func = original_function(this, p1, p2, p3, p4, p5);    // Afterwards, we resume the original function and end the detour here.
 			return func;
 		}
 	};
 
 	member_detour(TextError_dtr, TextErrorMessageSender, void* (void*)) {
 		void* detoured(void* p1) {
-		//	App::ConsolePrintF("Function 0x989170 called.");
+			MessageBoxW(NULL,L"Function address 0x989170 (in March 2017 version) was called. This means the error message 0x9B1552DB was sent, so applying the extended text has failed.\n\nIf you get this error message, please contact Liskomato on GitHub or Discord so they can look on this matter.\nTIP: You can read this error message again in the cheat console in case you close this window.", L"Adventure Text Limit Break: TextErrorMessageSender", MB_OK | MB_ICONWARNING);
+			App::ConsolePrintF("Text Limit Break: Function address 0x989170 (in March 2017 version) was called. This means the error message 0x9B1552DB was sent, so applying the extended text has failed.\n\nIf you get this error message, please contact Liskomato on GitHub or Discord so they can look on this matter.");
 			return original_function(this,p1);
 		}
 
 	};
 
-	/*
-	static_detour(ITextEditCon_detour, ITextEdit* ()) 
-	{
-		ITextEdit* detoured() {
-			ITextEdit* fun = original_function();
-			if (fun->ToWindow()->GetControlID() == 0xCEFA1100)
-				fun->SetMaxTextLength(-1);
-			return fun;
-		}
-	};
-	*/
 }
 void Dispose()
 {
@@ -79,9 +81,10 @@ void Dispose()
 
 void AttachDetours()
 {
+	// Detours of functions that exist in the SDK
 	UTFWin::UILayoutLoad_detour::attach(GetAddress(UTFWin::UILayout, Load));
-//	UTFWin::ITextEditCon_detour::attach(GetAddress(UTFWin::ITextEdit,Create));
 	
+	// Detours of non-SDK functions.
 	UTFWin::TextError_dtr::attach(Address(0x989170));
 	UTFWin::TextApplier_dtr::attach(Address(0x98c4d0));
 
