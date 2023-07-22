@@ -1,11 +1,13 @@
 # Adventure Text Limit Break
  This mod disables all text limitations on text edit fields found in Spore's Adventure Editor, allowing you to be as verbose as you want to be. It does not extend the amount of text bubbles total in each act, goal and creation, but at least now you will no longer be restricted by the 192 character limit imposed on you previously.
 
+### Latest release can be found [here](https://github.com/Liskomato/Spore-AdventureTextLimitBreak/releases/latest).
+
 ![](TextLimitsBroken.png) 
 
  If you encounter any issues, please don't hesitate to contact me about this! 
 
- **Requires [Spore ModAPI Launcher Kit](http://davoonline.com/sporemodder/rob55rod/ModAPI/Public/)**
+ ### **Requires [Spore ModAPI Launcher Kit](http://davoonline.com/sporemodder/rob55rod/ModAPI/Public/).**
 
 ## FAQ
 ### Is this shareable?
