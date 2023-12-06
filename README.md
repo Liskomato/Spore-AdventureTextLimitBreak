@@ -17,7 +17,10 @@ Yes, it is indeed a shareable adventure mod. In fact, one of my previous mods, [
 Same thing if you were to use the Localizer before for this purpose: The text itself will cease to exist if you try to edit it, but it will persist in the adventure's data itself for as long as it is unmodified. For this reason, the adventures now made with this are entirely shareable, and if you have used the Localizer before, *now you can actually display your long text strings in-game.*
 
 ### Anything else I should take note of?
-Recently when I was sharing three of my adventures utilizing overlong text, two of them couldn't be shared until I removed thumbnails for one adventure, and trimmed the previous intro/win/lose texts to less than 192 characters. If you encounter any issues with sharing your own adventures, try doing the same things I did until they comply to share. Or, if you know how to use SporeModder FX, try compressing your PNG thumbnails with a compression algorithm like [zopfli](https://github.com/google/zopfli), and manually place them again into your EditorSaves package.
+If you encounter any issues with sharing your own adventures to the online Sporepedia (i. e. the "Adventure was not successfully shared" error), try doing one or more of the following things:
+1. Remove extra images from the adventure in question in the editor until only the "saved" preview images and the thumbnail remain. You will know if they are "saved" if they appear as the first image in their respective frames.
+2. Trim the adventure's win, lose and intro texts to less than 192 characters each.
+3. If you know how to use SporeModder FX, try compressing your PNG thumbnails with a compression algorithm like [zopfli](https://github.com/google/zopfli), and manually place them again into your EditorSaves package.
 
  ## Credits
  - Liskomato - Main developer 
