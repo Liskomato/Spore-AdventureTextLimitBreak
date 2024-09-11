@@ -1,4 +1,9 @@
-<mod displayName="Adventure Text Limit Break" unique="TextBubbleLimitBreak" description="Removes all text limits from the Adventure Editor." installerSystemVersion="1.0.1.2" hasCustomInstaller="false" isExperimental="false" dllsBuild="2.5.278">
+<mod displayName="Adventure Text Limit Break v2.0" unique="TextBubbleLimitBreak" description="Removes all text limits from the Adventure Editor." installerSystemVersion="1.0.1.2" hasCustomInstaller="true" isExperimental="false" dllsBuild="2.5.339">
+<componentGroup unique="textUIRange" displayName="Version">
+<component unique="ShareFriendly" displayName="Share-Friendly" description="A somewhat 'share-friendly' version of the mod which keeps the win, lose and intro dialogues of adventures at their default/vanilla text limit." game="GalacticAdventures" >AdventureTextLimitBreak-ShareFriendly.package</component>
+<component unique="Full" displayName="Full" description="Full version of the mod, affecting all adventure text boxes. Might cause errors when attempting to share to Spore.com"  game="GalacticAdventures" defaultChecked="true">AdventureTextLimitBreak-Full.package</component>
+</componentGroup>
 <prerequisite>TextBubbleLimitBreak.dll</prerequisite>
 <remove>TextBubbleLimitBreak.dll</remove>
+<remove game="GalacticAdventures">*AdventureTextLimitBreak*</remove>
 </mod>

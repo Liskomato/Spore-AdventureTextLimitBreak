@@ -3,6 +3,11 @@
 #include "TextLimitBreaker.h"
 #include "TextLimitBreakClasses.h"
 
+PropertyListPtr idPropList;
+set<uint32_t> idList;
+uint32_t* idArray;
+size_t idArraySize;
+
 void Initialize()
 {
 	// This method is executed when the game starts, before the user interface is shown
@@ -12,6 +17,16 @@ void Initialize()
 	//  - Add new game modes
 	//  - Add new space tools
 	//  - Change materials
+
+	if (PropManager.GetPropertyList(0x7b85347e, 0x741df8da, idPropList) && App::Property::GetArrayUInt32(idPropList.get(), 0x7B85347E, idArraySize, idArray)) {
+		for (int i = 0; i < idArraySize; i++) {
+			idList.emplace(idArray[i]);
+		}
+	}
+	else {
+		idList = { 0xCEFA1100 , 0x0710A140 , 0x07172970, 0x07172950 , 0x07172960 , 0x0743B978 , 0x07957BA8 };
+	}
+
 }
 
 namespace UTFWin {
@@ -46,12 +61,7 @@ namespace UTFWin {
 			/// Turning this text editor into a Window class intrusive pointer
 			IWindowPtr thisWindow = this->ToWindow();
 			/// Checking what type of window we're working with. These are all text edit windows found in the Adventure Editor.
-			if (thisWindow->GetControlID() == 0xCEFA1100 || 
-				thisWindow->GetControlID() == 0x0710A140 || 
-				thisWindow->GetControlID() == 0x07172970 || 
-				thisWindow->GetControlID() == 0x07172950 ||
-				thisWindow->GetControlID() == 0x07172960 ||
-				thisWindow->GetControlID() == 0x0743B978 )
+			if (idList.count(thisWindow->GetControlID()))
 			{
 				this->SetMaxTextLength(-1);		// If match is found, set the max text length to -1 (basically unlimited)
 			}
