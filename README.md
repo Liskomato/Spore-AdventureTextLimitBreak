@@ -32,4 +32,5 @@ If none of these work for you, remove the text limit break mod as well and rewri
 I plan on also updating the [Creation ZIP Porter](https://github.com/Liskomato/Spore-CreationZIP-Porter) mod with a feature in the ``adventureExport`` cheat where it only exports the adventure's own files and its thumbnails, allowing you to create a "duplicate" adventure with its own custom thumbnails which you can then try sharing, making option 3 more viable as a result.
 
  ## Credits
- - Liskomato - Main developer 
+ - Liskomato - Main developer
+ - 0KepOnline - Logo designer
